@@ -360,7 +360,7 @@ footer{text-align:center;color:#66756c;font-size:12px;margin-top:18px}
     <div class="qtitle">¿Hay algo más que quieras decirnos?</div>
     <textarea id="additionalComments" placeholder="Comentario opcional"></textarea>
   </div>
-  <div class="actions"><button class="btn ghost" onclick="prevStep()">← Atrás</button><button class="btn primary" onclick="finishSurvey()">Guardar mi respuesta ✓</button></div>
+  <div class="actions"><button class="btn ghost" onclick="prevStep()">← Atrás</button><button class="btn primary" onclick="finishSurvey(); enviarEncuestaAGoogle()">Guardar mi respuesta ✓</button></div>
 </section>
 
 <section class="step" data-step="7">
@@ -577,3 +577,29 @@ function exportCSV(){
 </script>
 </body>
 </html>
+<script>
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6L-BC5JQHX0_1Ua9r-Z564UfMU6-85Uout-EumaWSYKMyrVT8NVrp5WoCe46fEhBW/exec';
+
+function enviarRespuestaGoogleForms(datos) {
+  let frame = document.getElementById('googleSubmitFrame');  if (!frame) {   frame = document.createElement('iframe');   frame.id = 'googleSubmitFrame';   frame.name = 'googleSubmitFrame';   frame.style.display = 'none';   document.body.appendChild(frame); }
+
+  formulario.method = 'POST';
+  formulario.action = GOOGLE_APPS_SCRIPT_URL;
+  formulario.target = 'googleSubmitFrame';
+  formulario.style.display = 'none';
+
+  const campo = document.createElement('input');
+  campo.type = 'hidden';
+  campo.name = 'payload';
+  campo.value = JSON.stringify(datos);
+
+  formulario.appendChild(campo);
+  document.body.appendChild(formulario);
+
+  formulario.submit();
+
+  setTimeout(() => {
+    formulario.remove();
+  }, 1000);
+}
+</script>
