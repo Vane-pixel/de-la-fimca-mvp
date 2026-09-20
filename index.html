@@ -581,25 +581,43 @@ function exportCSV(){
 const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6L-BC5JQHX0_1Ua9r-Z564UfMU6-85Uout-EumaWSYKMyrVT8NVrp5WoCe46fEhBW/exec';
 
 function enviarRespuestaGoogleForms(datos) {
-  let frame = document.getElementById('googleSubmitFrame');  if (!frame) {   frame = document.createElement('iframe');   frame.id = 'googleSubmitFrame';   frame.name = 'googleSubmitFrame';   frame.style.display = 'none';   document.body.appendChild(frame); }
+  try {
+    let frame = document.getElementById('googleSubmitFrame');
 
-  formulario.method = 'POST';
-  formulario.action = GOOGLE_APPS_SCRIPT_URL;
-  formulario.target = 'googleSubmitFrame';
-  formulario.style.display = 'none';
+    if (!frame) {
+      frame = document.createElement('iframe');
+      frame.id = 'googleSubmitFrame';
+      frame.name = 'googleSubmitFrame';
+      frame.style.display = 'none';
+      document.body.appendChild(frame);
+    }
 
-  const campo = document.createElement('input');
-  campo.type = 'hidden';
-  campo.name = 'payload';
-  campo.value = JSON.stringify(datos);
+    const formulario = document.createElement('form');
 
-  formulario.appendChild(campo);
-  document.body.appendChild(formulario);
+    formulario.method = 'POST';
+    formulario.action = GOOGLE_APPS_SCRIPT_URL;
+    formulario.target = 'googleSubmitFrame';
+    formulario.style.display = 'none';
 
-  formulario.submit();
+    const campo = document.createElement('input');
 
-  setTimeout(() => {
-    formulario.remove();
-  }, 1000);
+    campo.type = 'hidden';
+    campo.name = 'payload';
+    campo.value = JSON.stringify(datos);
+
+    formulario.appendChild(campo);
+    document.body.appendChild(formulario);
+
+    formulario.submit();
+
+    console.log('Respuesta enviada a Google Apps Script.');
+
+    setTimeout(() => {
+      formulario.remove();
+    }, 3000);
+
+  } catch (error) {
+    console.error('Error al enviar respuesta a Google Apps Script:', error);
+  }
 }
 </script>
