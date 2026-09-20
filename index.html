@@ -508,6 +508,10 @@ function finishSurvey(){
   if(!textVal('valueStatement')){alert('Puedes completar la última pregunta para cerrar la experiencia.');return}
   latestSaved=collect();
   const data=getData(); data.push(latestSaved); saveData(data);
+
+  // Enviar una copia de la respuesta a Google Forms
+  enviarRespuestaGoogleForms(latestSaved);
+
   $('scoreBrand').textContent=latestSaved.brandAttraction?latestSaved.brandAttraction+'/5':'—';
   $('scorePresentation').textContent=latestSaved.presentationAttraction?latestSaved.presentationAttraction+'/5':'—';
   $('scoreTry').textContent=latestSaved.tryIntent?latestSaved.tryIntent+'/5':'—';
