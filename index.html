@@ -508,6 +508,7 @@ function finishSurvey(){
   if(!textVal('valueStatement')){alert('Puedes completar la última pregunta para cerrar la experiencia.');return}
   latestSaved=collect();
   const data=getData(); data.push(latestSaved); saveData(data);
+  enviarRespuestaGoogleForms(latestSaved);
 
   // Enviar una copia de la respuesta a Google Forms
   enviarRespuestaGoogleForms(latestSaved);
